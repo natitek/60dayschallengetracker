@@ -5,6 +5,15 @@ h1{
     
   
 }
+th{
+    font-size: 40px;
+    border: black solid 4px;
+    padding: 10px ;
+    
+}
 .daysTable{
     border:black solid 2px ;
+}
+td{
+    border: black solid 2px ;
 }
