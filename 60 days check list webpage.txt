@@ -5,4 +5,4 @@ simple design
 
 * bonus
 
-connect to wakatime and get dailt usage info
+connect to wakatime and get daily usage info
