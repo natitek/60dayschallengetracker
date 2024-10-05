@@ -4,26 +4,42 @@ const rows = daysTable.rows;
 
 let cellcount = 0;
 
-
-let daycounter;
-
 async function getDateFromJSON(){
-    const url = "./date.json"
+const url =
+    "./date.json";
 
-    let fetchRes = fetch(url);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
 
-    fetchRes.then(res => res.json()).then(d => {
-        console.log(d)
-    })
-} 
+    const json = await response.json();
+    
+    let jsonArray = Object.values(json)[0];
+
+    return jsonArray
+   
+  } catch (error) {
+    console.error(error.messsage);
+  }}
+ 
+
+  let dayNumber = 3;
+  
+
+
+  getDateFromJSON().then(x => { 
+    console.log(x);
+   
+    dayNumber = x
+    
+});
 
 
 
 
-// var dayss = 0;
-
-
-
+//Makes the Table
 for (var i = 1; i <= rows.length - 1; i++) {
   for (var j = 0; j < 7; j++) {
     if (cellcount < 4 || cellcount >= 60 + 4) {
@@ -99,13 +115,18 @@ let todaysdate = getDateFromJSON();
   
 
     //todo : POST to the JSON the new Day
+    
     return true;
   }
+  else{
+    return false;
+  }
 }
+// console.log(getDateFromJSON()) 
 
 setInterval(isdayover(), 60000); //every Minute check if its a new day
 
-setInterval(check(), 60000); //Check every Minute if coding is complete befor day is over
+setInterval(check(), 1000); //Check every Minute if coding is complete befor day is over
 
 function iscodingcomplete() {
   if (getData() >= 2) {
@@ -118,60 +139,32 @@ function iscodingcomplete() {
 function check() {
   for (var i = 1; i <= rows.length - 1; i++) {
     for (var j = 0; j < 7; j++) {
-      if (
-        rows.item(i).children.item(j).firstElementChild.textContent == daycounter && !iscodingcomplete() && isdayover()
-      ) {
-        rows.item(i).children.item(j).classList.add("failed");
-      } else if (
-        rows.item(i).children.item(j).firstElementChild.textContent == daycounter && !iscodingcomplete() &&!isdayover()
-      ) {
-        rows.item(i).children.item(j).classList.add("failed");
-      } // if the day isnt over dont do anything
-      else if((rows.item(i).children.item(j).firstElementChild.textContent == daycounter) && iscodingcomplete()){
-        rows.item(i).children.item(j).classList.add("passed");
+      let thecell = rows.item(i).children.item(j).firstElementChild.textContent
+      let thefirstelement = rows.item(i).children.item(j).classList
+
+      if (thecell == dayNumber && !iscodingcomplete() && isdayover()) {
+        thefirstelement.add("failed");
+        
+    } else if (thecell == dayNumber && !iscodingcomplete() && !isdayover()) {
+        thefirstelement.add("failed");
+      } 
+      else if(thecell == dayNumber && iscodingcomplete()){
+        thefirstelement.add("passed");
+       
       }
-      else if (
-        rows.item(i).children.item(j).firstElementChild.textContent == daycounter &&iscodingcomplete() &&!isdayover()
-      ) {
-        rows.item(i).children.item(j).classList.add("passed");
-      } // if the day isnt over dont do anything
+      else if (thecell == dayNumber && iscodingcomplete() && !isdayover()) {
+        thefirstelement.add("passed");
+      } 
     }
+    console.log(dayNumber)
   }
+ 
 }
-
-
-
-let codingDaysArray = [];
-codingDaysArray[0] = 4.8;
-
 
 function addToCodingDaysJSON(){
 
     
 }
-
-let da = 0;
-
-// async function getDateFromJSON(){
- 
-//         const url =
-//           "./date.json";
-//           const promise = new Promise(await fetch(url))
-//                   .then(response => response.json())
-//         .then(x => Object.values(x)[0])
-          
-
-// } 
-
-
-
-
-
-
-
-      
-
-
 
 //1440 minutes in a date
 
