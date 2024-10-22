@@ -56,6 +56,9 @@ td{
     border-radius: 2em;
     text-align: center;
     padding: 1em;
+    max-width: 1em;
+    height: 1em;
+    /* padding-top: 0; */
     
     }
 
@@ -78,3 +81,21 @@ tr{
 .default_style{
     background-color: rgb(255, 255, 255);
 }
+
+.invisible{
+    visibility: hidden;
+    
+    
+}
+.seen{
+    visibility: visible;
+}
+small{
+    padding-top: -10px;
+    margin-top: -20px;
+}
+/* p{
+    margin-bottom: auto;
+    padding-bottom: auto;
+  
+} */

@@ -4,9 +4,6 @@ const rows = daysTable.rows;
 
 let cellcount = 0;
 
-//                0    1    2    3   4  5        6  7       8     9   10  11  12  13
-
-
 
 let history = new Array(11);
 let sizeofarray = 11;
@@ -22,7 +19,10 @@ for(let i = 0 ; i < sizeofarray; i ++){
   }
 
   history[0] = [4.80,6.02,0.65,0.43,0.65, 4.97 , 4];
-  history[1] = [ 0.58,3.22,1.18, 0 , 0 , 0 , 0 ];
+  history[1] = [ 0.58,3.22,1.18,0, 0 , 0 , 0 ];
+  history[2][0] = 0.65
+  history[2][1] = 2.68
+
 
 
 history.forEach(element => {
@@ -52,16 +52,29 @@ history.forEach(element => {
 //   }}
  
 
-  let dayNumber = 16;
+  
+  
+
+  let startdate = new Date("2024-10-04");
+
+  let today = new Date(new Date().toISOString().split("T",1)[0]);
+
+  let dayNumber = (today - startdate)/86400000 // convert millie seconds to days
+
+
+;
+
+
+  // when time reaches 23 
+  //  first check if the array of the day is empty or undefined
+  // if its undefined add from wakatime using getData(); ex 18
+
+  //18 % 7 = column  add to the 4th the element  column
+  // 18 / 7  = row
+  // if cell != undefined continue;
   
 
 
-
-// getData().then(
-//   x => {
-//     console.log(x)
-  
-// });
 
 
 
@@ -77,9 +90,53 @@ for (var i = 1; i <= rows.length-1; i++) {
 
       rows.item(i).children.item(j).firstElementChild.textContent = cellcount+1;
       cellcount += 1;
-      rows.item(i).children.item(j).addEventListener("dblclick", function (e) {
-          console.log(this.textContent);
+      rows.item(i).children.item(j).addEventListener("pointerover", function (e) {
+         
+        if(this.children[0].textContent % 7 == 0){
+
+          console.log(history[this.parentElement.rowIndex - 1][6]);
+
+            
+          this.parentElement.children[6].children[1].textContent = history[this.parentElement.rowIndex - 1][6]
+
+          // this.parentElement.children[6].children[1].classList.add("seen");
+  
+
+        }
+        else if(this.children[0].textContent % 7 != 0){
+
+          this.parentElement.children[this.children[0].textContent % 7-1].children[1].textContent = history[this.parentElement.rowIndex -1][this.children[0].textContent % 7-1]
+
+
+          console.log(((history[this.parentElement.rowIndex -1][this.children[0].textContent % 7-1])));
+          // this.parentElement.children[this.children[0].textContent % 7-1].children[1].classList.add("seen");
+
+          // console.log(` ${this.parentElement.rowIndex -1} ${this.children[0].textContent % 7-1} ` );
+        }
+        
+         
         });
+        rows.item(i).children.item(j).addEventListener("pointerout", function (e) {
+          if(this.children[0].textContent % 7 == 0){
+
+           
+            this.parentElement.children[6].children[1].innerHTML = " "
+  
+              
+  
+          }
+          else if(this.children[0].textContent % 7 != 0){
+
+
+            this.parentElement.children[this.children[0].textContent % 7-1].children[1].innerHTML = " "
+  
+            // this.parentElement.children[this.children[0].textContent % 7-1].children[1].classList.add("invisible");
+  
+  
+           
+          }
+
+          });
     }
 
    
@@ -126,27 +183,7 @@ async function getData() {
   }
 }
 
-
-function isdayover() {
-  if (new Date().getHours() >= 23) {
-// let todaysdate = getDateFromJSON();
-
-    todaysdate += 1;
-  
-
-    //TODO : POST to the JSON the new Day
-    
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-// console.log(getDateFromJSON()) 
-
-// setInterval(isdayover(), 60000); //every Minute check if its a new day
-
-setInterval(check(), 1000); //Check every Minute if coding is complete befor day is over
+setInterval(check(), 60000); //Check every Minute if coding is complete befor day is over
 
 
 function check() {
